@@ -16,7 +16,7 @@ FSJS project 2 - List Filter and Pagination
    will only be used inside of a function, then it can be locally 
    scoped to that function.
 ***/
-const studentList = document.querySelector('.student-list');
+const studentList = document.querySelector('.student-list')[0];
 const studentItem = studentList.children;
 const studentsPerPage = 10;
 
@@ -41,7 +41,7 @@ function showPage ( list, page) {
    const endIndex = page * studentsPerPage;
    for ( let i = 0; i < list.length; i++){
       if( i >= startIndex && i < endIndex){
-         list[i].style.display = '';
+         list[i].style.display = 'block';
       } else {
          list[i].style.display = 'none';
       }
@@ -54,8 +54,35 @@ function showPage ( list, page) {
    Create the `appendPageLinks function` to generate, append, and add 
    functionality to the pagination buttons.
 ***/
-
-
+function appendPageLinks (list) {
+   const totalStudents = studentItem.length;
+   const totalPages = Math.ceil(totalStudents/studentsPerPage);
+   const paginationDiv = document.createElement('div');
+   paginationDiv.className = 'pagination';
+   const mainPage = document.querySelector('.page');
+   mainPage.appendChild(paginationDiv);
+   const UL = document.createElement('ul');
+   paginationDiv.appendChild(UL);
+   const anchorList = document.querySelectorAll('a');
+   for ( let i = 0; i < totalPages; i++){
+      const LI = document.createElement('li');
+      const A = document.createElement('a');
+      A.href = '#';
+      A.textContent = i + 1;
+      UL.appendChild(LI);
+      LI.appendChild(A);
+       A.addEventListener ('click', (e) => {
+          for( let i = 0; i < anchorList.length; i++){
+             anchorList[i].className = '';
+             e.target.className = 'active';
+          }
+          return showPage (studentItem, i);
+       });
+   }
+   anchorList[0].className = 'active';
+} 
+showPage (studentItem, 0);
+appendPageLinks();
 
 
 
