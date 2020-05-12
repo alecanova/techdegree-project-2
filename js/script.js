@@ -16,8 +16,8 @@ FSJS project 2 - List Filter and Pagination
    will only be used inside of a function, then it can be locally 
    scoped to that function.
 ***/
-const studentList = document.querySelector('.student-list')[0];
-const studentItem = studentList.children;
+const studentList = document.querySelector('.student-list');
+const students = document.querySelectorAll('.student-item');
 const studentsPerPage = 10;
 
 
@@ -36,7 +36,7 @@ const studentsPerPage = 10;
        that will be passed into the parens later when you call or 
        "invoke" the function 
 ***/
-function showPage ( list, page) {
+const showPage = ( list, page) => {
    const startIndex = (page * studentsPerPage) - studentsPerPage;
    const endIndex = page * studentsPerPage;
    for ( let i = 0; i < list.length; i++){
@@ -53,37 +53,37 @@ function showPage ( list, page) {
 /*** 
    Create the `appendPageLinks function` to generate, append, and add 
    functionality to the pagination buttons.
-***/
-function appendPageLinks (list) {
-   const totalStudents = studentItem.length;
-   const totalPages = Math.ceil(totalStudents/studentsPerPage);
+**/
+const appendPageList = (list) => {
+   const totalPages = Math.ceil(list.length / studentsPerPage);
    const paginationDiv = document.createElement('div');
    paginationDiv.className = 'pagination';
-   const mainPage = document.querySelector('.page');
-   mainPage.appendChild(paginationDiv);
+   const pageDiv = document.querySelector('.page');
+   pageDiv.appendChild(paginationDiv);
    const UL = document.createElement('ul');
    paginationDiv.appendChild(UL);
-   const anchorList = document.querySelectorAll('a');
-   for ( let i = 0; i < totalPages; i++){
+   
+   for ( let i = 1; i < totalPages; i++){
       const LI = document.createElement('li');
-      const A = document.createElement('a');
-      A.href = '#';
-      A.textContent = i + 1;
+      const anchor = document.createElement('a');
+      anchor.href = '#';
+      anchor.textContent = i;
       UL.appendChild(LI);
-      LI.appendChild(A);
-       A.addEventListener ('click', (e) => {
-          for( let i = 0; i < anchorList.length; i++){
-             anchorList[i].className = '';
-             e.target.className = 'active';
-          }
-          return showPage (studentItem, i);
-       });
+      LI.appendChild(anchor);
+      anchor.addEventListener('click', (e) => {
+         e.preventDefault();
+         const activeAnchor = document.querySelector('.active');
+         if ( activeAnchor){
+            activeAnchor.classList.remove('active');
+         }
+         e.target.className = 'active';
+         showPage(students, a.textContent);
+      });
    }
-   anchorList[0].className = 'active';
-} 
-showPage (studentItem, 0);
-appendPageLinks();
+      
+}
 
 
-
+showPage (students, 1);
+appendPageList (students);
 // Remember to delete the comments that came with this file, and replace them with your own code comments.
