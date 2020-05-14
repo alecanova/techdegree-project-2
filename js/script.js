@@ -3,7 +3,7 @@ Treehouse Techdegree:
 FSJS project 2 - List Filter and Pagination by Alessandro Canova
 ******************************************/
 
-// Selecting global variables
+// Selecting and creating global variables.
 const students = document.querySelectorAll('.student-item');
 const studentsPerPage = 10;
 const pageDiv = document.querySelector('.page');
@@ -11,8 +11,8 @@ const pageHeader = document.querySelector('.page-header');
 const paginationDiv = document.createElement('div');
 paginationDiv.className = 'pagination';
 pageDiv.appendChild(paginationDiv);
-// Creating a 'div' element to store the message 'No results'.
-const noResultsMessage = document.createElement('div');
+const noResultsMessage = document.createElement('div'); // 'div' element to store the message 'No results'.
+pageDiv.appendChild(noResultsMessage);
 
 /**
 Creating the 'showPage' function to hide all of the items in the 
@@ -33,7 +33,7 @@ const showPage = ( list, page) => {
 }
 
 /**
-   Creating the 'appendPageLinks' function to generate, append, and add 
+   Creating the 'appendPageList' function to generate, append, and add 
    functionality to the pagination buttons.
 **/
 const appendPageList = (list) => {
@@ -63,24 +63,32 @@ const appendPageList = (list) => {
             const clickedAnchor = event.target;
             clickedAnchor.classList.add('active');
          })
-     }
-      
+     }    
 }
 
+/**
+   Creating the 'searchResult' function to filter the search bar input.
+**/
 const searchResult = (searchInput) => {
    const studentSearched = searchInput.value;
    const studentNames = document.querySelectorAll('h3');
+   // Creating an array to store the students matching results.
    const matchStudent = [];
+   // Replacing the 'paginationDiv' content with an empty string.
    paginationDiv.innerHTML = '';
+   // Looping through the students to temporarily hide their content.
    for ( let i = 0; i < students.length; i++) {
       students[i].style.display = 'none';
    }
-   for ( let i = 0; i < studentNames; i++){
-      if ( studentNames.textContent.toLowerCase().includes( studentSearched.toLowerCase() ) ) {
+   // Looping through the students names('h3') to check their matching with the search input using the 'includes()' method.
+   for ( let i = 0; i < studentNames.length; i++) {
+      if ( studentNames[i].textContent.toLowerCase().includes( studentSearched.toLowerCase() ) ) {
          const studentInfo = studentNames[i].parentNode.parentNode;
+   // Pushing studentInfo into the array.
          matchStudent.push(studentInfo);
       }
    }
+   // If statement to show either the matching result or the message 'No results'.
    if ( matchStudent.length > 0) {
       showPage ( matchStudent, 1);
       appendPageList ( matchStudent);
@@ -94,7 +102,7 @@ const searchResult = (searchInput) => {
 } 
 
 /**
-Creating the 'searchBar' function 
+Creating the 'searchBar' function.
 **/   
 const searchBar = () => {
 // Creating and appending 'Search bar' elements.
@@ -107,12 +115,15 @@ const searchBar = () => {
    const searchButton = document.createElement('button');
    searchButton.textContent = 'Search';
    searchBarDiv.appendChild(searchButton);
-
-   searchButton.addEventListener ('click', () => {
-      searchResult ( searchInput);
+// Adding a click event to the 'search' button.
+   searchButton.addEventListener ('click', (e) => {
+      e.preventDefault();
+      searchResult (input);
    });
-   input.addEventListener ('keyup', () => {
-      searchResult ( searchInput);
+// Adding a keyup event to the search input.
+   input.addEventListener ('keyup', (e) => {
+      e.preventDefault();
+      searchResult (input);
    });
 }
 
